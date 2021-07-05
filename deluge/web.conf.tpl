@@ -4,7 +4,7 @@
 }{
   "sidebar_show_zero": false,
   "show_session_speed": false,
-  "pwd_sha1": "${PWD_SHA1}",
+  "pwd_sha1": "2ce1a410bcdcc53064129b6d950f2e9fee4edc1e",
   "show_sidebar": true,
   "sessions": {
     "e54616672229d03f04d7f39077521bac": {
