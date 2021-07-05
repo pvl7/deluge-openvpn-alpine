@@ -4,6 +4,10 @@ services:
   deluge-openvpn-alpine:
     image: pvl7/deluge-openvpn-alpine:v0.6-1-test
     container_name: deluge-openvpn-alpine
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun    
     environment:
       - OVPN_USER=<insert>
       - OVPN_SECRET=<insert>
