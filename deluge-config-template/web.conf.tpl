@@ -25,5 +25,5 @@
   "interface": "0.0.0.0",
   "sidebar_multiple_filters": true,
   "pwd_salt": "${PWD_SALT}",
-  "port": ${DELUGE_PORT}
+  "port": 8112 
 }
