@@ -5,16 +5,15 @@ set -euo pipefail
 # not mandatory parameters
 DELUGE_DAEMON_LOG_LEVEL=$(printenv DELUGE_DAEMON_LOG_LEVEL) || true
 DELUGE_WEB_LOG_LEVEL=$(printenv DELUGE_WEB_LOG_LEVEL) || true
-DELUGE_PORT=$(printenv DELUGE_PORT) || true
 DELUGE_PASSWORD=$(printenv DELUGE_PASSWORD) || true
 
 # setting default values
-DELUGE_PORT=${DELUGE_PORT:-8112}
 DELUGE_DAEMON_LOG_LEVEL=${DELUGE_DAEMON_LOG_LEVEL:-info}
 DELUGE_WEB_LOG_LEVEL=${DELUGE_WEB_LOG_LEVEL:-info}
 DELUGE_PASSWORD=${DELUGE_PASSWORD:-deluge}
 
 deluge_daemon_port=58846
+deluge_web_port=8112
 deluge_work_dir="/deluge"
 
 deluge_core_conf_template="/deluge-config-template/core.conf.tpl"
@@ -68,7 +67,7 @@ echo "[info] Deluge core daemon started"
 nohup /usr/bin/deluge-web -c "${deluge_work_dir}" -L "${DELUGE_WEB_LOG_LEVEL}" 2>&1 &
 
 startup_timeout=30
-while [[ $(netstat -ntl | grep "${DELUGE_PORT}" | grep LISTEN) == "" ]]; do
+while [[ $(netstat -ntl | grep "${deluge_web_port}" | grep LISTEN) == "" ]]; do
   echo "[INFO] Waiting for Deluge Web UI process to come up...[${startup_timeout}]"
   sleep 1
   let "startup_timeout-=1"
