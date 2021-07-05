@@ -21,9 +21,11 @@ deluge_web_conf="deluge/web.conf"
 # clean up PID file if deluge crashed previously
 rm -f /deluge/deluged.pid
 
-# generating SHA1 hash for Deluge password
-PWD_SHA1=$(echo -n "${DELUGE_PASSWORD}" | sha1sum | awk '{print $1}')
-export PWD_SHA1
+# generating SHA1 salt and hash for Deluge password
+PWD=$(python3 deluge/deluge_pwgen.py "${DELUGE_PASSWORD}")
+PWD_SALT=$(echo "${PWD}" | cut -d':' -f1)
+PWD_HASH=$(echo "${PWD}" | cut -d':' -f2)
+export PWD_SALT PWD_HASH
 
 # run variables substitution
 cat "${deluge_web_conf_template}" | envsubst > ${deluge_web_conf}
@@ -49,7 +51,7 @@ echo "[info] Deluge core daemon started"
 
 
 # run deluge-web
-nohup /usr/bin/deluge-web -c /config -L "${DELUGE_WEB_LOG_LEVEL}" -l /deluge/deluge-web.log &
+nohup /usr/bin/deluge-web -c /deluge -L "${DELUGE_WEB_LOG_LEVEL}" -l /deluge/deluge-web.log &
 
 startup_timeout=30
 while [[ $(netstat -ntl | grep "${DELUGE_PORT}" | grep LISTEN) == "" ]]; do
