@@ -4,7 +4,7 @@
 }{
   "sidebar_show_zero": false,
   "show_session_speed": false,
-  "pwd_sha1": "${PWD_SHA1}",
+  "pwd_sha1": "${PWD_HASH}",
   "show_sidebar": true,
   "sessions": {
     "e54616672229d03f04d7f39077521bac": {
@@ -24,6 +24,6 @@
   "default_daemon": "",
   "interface": "0.0.0.0",
   "sidebar_multiple_filters": true,
-  "pwd_salt": "c26ab3bbd8b137f99cd83c2c1c0963bcc1a35cad",
+  "pwd_salt": "${PWD_SALT}",
   "port": ${DELUGE_PORT}
 }

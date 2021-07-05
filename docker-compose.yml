@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  deluge-openvpn-alpine:
+    image: pvl7/deluge-openvpn-alpine:v0.6-1-test
+    container_name: deluge-openvpn-alpine
+    environment:
+      - OVPN_USER=<insert>
+      - OVPN_SECRET=<insert>
+      - OVPN_ENABLED=true
+      - LAN_NETWORK_CIDR=<insert>
+    volumes:
+      - /path/to/my/openvpn/config:/etc/openvpn/openvpn-client.ovpn:ro
+      - /My/Downloads:/data
+      - /deluge-openvpn-alpine/work/dir:/deluge
+    ports:
+      - 8112:8112/tcp
+    restart: unless-stopped
