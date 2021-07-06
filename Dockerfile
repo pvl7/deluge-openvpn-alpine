@@ -1,5 +1,6 @@
 FROM alpine:edge AS envsubst
 MAINTAINER Pavel Lu <email@pavel.lu>
+LABEL maintainer="Pavel Lu"
 
 ENV LANG en_US.UTF-8
 
