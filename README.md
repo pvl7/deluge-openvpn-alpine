@@ -1,4 +1,6 @@
 # OpenVPN and Deluge lightweight solution
+[![](https://img.shields.io/github/issues/pvl7/deluge-openvpn-alpine?style=for-the-badge)](https://github.com/pvl7/deluge-openvpn-alpine)
+
 A lighweight version of Deluge and OpenVPN running in the same container and powered by Alpine linux.
 
 # Description
