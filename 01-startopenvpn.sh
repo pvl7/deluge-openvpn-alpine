@@ -5,27 +5,31 @@ set -euo pipefail
 openvpn_work_dir="/etc/openvpn"
 openvpn_credentials_file="credentials.txt"
 openvpn_config_file="openvpn-client.ovpn"
+openvpn_userpass_param=""
 
-# mandatory parameters
-OVPN_USER=$(printenv OVPN_USER)
-OVPN_USER=$(printenv OVPN_USER)
-LAN_NETWORK_CIDR=$(printenv LAN_NETWORK_CIDR)
-
-# not mandatory parameters
 OVPN_ENABLED=$(printenv OVPN_ENABLED) || true
-OVPN_LOG_LEVEL=$(printenv OVPN_LOG_LEVEL) || true
-OVPN_EXTRA_PARAMS=$(printenv OVPN_EXTRA_PARAMS) || true
-
-# setting default values
-OVPN_LOG_LEVEL=${OVPN_LOG_LEVEL:-3}
 
 # check if VPN is enabled then run all the commands
 if [[ "${OVPN_ENABLED}" == "true" ]] ; then
 
+  # mandatory parameters
+  LAN_NETWORK_CIDR=$(printenv LAN_NETWORK_CIDR)
+
+  # not mandatory parameters
+  OVPN_USER=$(printenv OVPN_USER) || true
+  OVPN_USER=$(printenv OVPN_USER) || true
+  OVPN_LOG_LEVEL=$(printenv OVPN_LOG_LEVEL) || true
+  OVPN_EXTRA_PARAMS=$(printenv OVPN_EXTRA_PARAMS) || true
+
+  # setting default values
+  OVPN_LOG_LEVEL=${OVPN_LOG_LEVEL:-3}
+
   # some pre-flight checklist
-  if [[ ${OVPN_USER} == "" ]] || [[ ${OVPN_SECRET} == "" ]] ; then
-    echo "[ERROR] OpenVPN credentials are missing. Please define OVPN_USER and OVPN_SECRET environment variables."
-    exit 1
+  if [[ ${OVPN_USER} != "" ]] && [[ ${OVPN_SECRET} != "" ]] ; then
+    # create credentials file
+    echo "${OVPN_USER}" > ${openvpn_work_dir}/${openvpn_credentials_file}
+    echo "${OVPN_SECRET}" >> ${openvpn_work_dir}/${openvpn_credentials_file}
+    openvpn_userpass_param="--auth-user-pass ${openvpn_work_dir}/${openvpn_credentials_file}"
   fi
 
   if [ ! -f ${openvpn_work_dir}/${openvpn_config_file} ] ; then
@@ -45,21 +49,17 @@ if [[ "${OVPN_ENABLED}" == "true" ]] ; then
       mknod /dev/net/tun c 10 200
   fi
 
-  # create credentials file
-  echo "${OVPN_USER}" > ${openvpn_work_dir}/${openvpn_credentials_file}
-  echo "${OVPN_SECRET}" >> ${openvpn_work_dir}/${openvpn_credentials_file}
 
   echo "[INFO] OpenVPN is starting..."
 
   # start OpenVPN client
   nohup openvpn --config ${openvpn_work_dir}/${openvpn_config_file} \
-    --auth-user-pass ${openvpn_work_dir}/${openvpn_credentials_file} \
     --verb ${OVPN_LOG_LEVEL} \
+    ${openvpn_userpass_param} \
     ${OVPN_EXTRA_PARAMS} \
   &
 
   startup_timeout=30
-
   while [[ $(ps -ef|grep "\d\sopenvpn") == "" ]] ; do
     echo "[INFO] Waiting for OpenVPN to come up...[${startup_timeout}]"
     sleep 1
@@ -89,7 +89,3 @@ else
   echo "[INFO] OpenVPN is not enabled, not starting..."
 
 fi
-
-
-
-

@@ -2,7 +2,7 @@ version: '3'
 
 services:
   deluge-openvpn-alpine:
-    image: pvl7/deluge-openvpn-alpine:v0.6-1-test
+    image: pvl7/deluge-openvpn-alpine:latest
     container_name: deluge-openvpn-alpine
     cap_add:
       - NET_ADMIN
