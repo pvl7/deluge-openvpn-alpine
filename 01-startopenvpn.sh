@@ -17,7 +17,7 @@ if [[ "${OVPN_ENABLED}" == "true" ]] ; then
 
   # not mandatory parameters
   OVPN_USER=$(printenv OVPN_USER) || true
-  OVPN_USER=$(printenv OVPN_USER) || true
+  OVPN_SECRET=$(printenv OVPN_SECRET) || true
   OVPN_LOG_LEVEL=$(printenv OVPN_LOG_LEVEL) || true
   OVPN_EXTRA_PARAMS=$(printenv OVPN_EXTRA_PARAMS) || true
 
