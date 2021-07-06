@@ -74,7 +74,7 @@ docker run -it \
 | :----: | --- |
 | `OVPN_ENABLED=true` | Enables OpenVPN. Any other value or omitted variable won't start the OpenVPN daemon |
 | `OVPN_USER` | Your VPN provider user name. OpenVPN will ignore the user/pass authentication if not provided  |
-| `OVPN_PASS` | Your VPN provider user password. OpenVPN will ignore the user/pass authentication if not provided  |
+| `OVPN_SECRET` | Your VPN provider user password. OpenVPN will ignore the user/pass authentication if not provided  |
 | `OVPN_LOG_LEVEL` | OpenVPN logs verbosity level (3 is by default)|
 | `OVPN_EXTRA_PARAMS` | To make life easier if some extra OpenVPN parameters are required |
 | `DELUGE_DAEMON_LOG_LEVEL` | Deluge daemon logs verbosity level (`info` is by default) |
